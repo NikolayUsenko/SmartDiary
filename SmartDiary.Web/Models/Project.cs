@@ -20,6 +20,9 @@ namespace SmartDiary.Web.Models
         // Навигационные свойства
         [ForeignKey("OwnerId")]
         public User? Owner { get; set; }
+
+        public DateTime UpdatedAt { get; set; }
+
         public ICollection<Task> Tasks { get; set; } = new List<Task>();
     }
 }

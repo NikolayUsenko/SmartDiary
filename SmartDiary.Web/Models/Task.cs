@@ -28,15 +28,34 @@ namespace SmartDiary.Web.Models
         [ForeignKey("UserId")]
         public User? User { get; set; }
         // Связь многие-ко-многим с Tag
+
+        public DateTime UpdatedAt { get; set; }
+
         public ICollection<TaskTag> TaskTags { get; set; } = new List<TaskTag>();
         // Кастомная валидация для дедлайна
-        public static ValidationResult? ValidateDeadline(DateTime? deadline,
-        ValidationContext context)
+        public static ValidationResult? ValidateDeadline(DateTime? deadline, ValidationContext context)
         {
-            if (deadline.HasValue && deadline.Value < DateTime.UtcNow.Date)
+            // Получаем текущий экземпляр задачи, чтобы иметь доступ к полю CreatedAt
+            var taskInstance = (Task)context.ObjectInstance;
+
+            // 1. Проверка: если дедлайн указан
+            if (deadline.HasValue)
             {
-                return new ValidationResult("Дедлайн не может быть в прошлом");
+                // Проверка, что дедлайн не в прошлом (относительно текущего времени)
+                if (deadline.Value < DateTime.UtcNow)
+                {
+                    return new ValidationResult("Дедлайн не может быть в прошлом (относительно текущей даты).");
+                }
+
+                // 2. РАСШИРЕННАЯ ПРОВЕРКА: Дедлайн не может быть раньше даты создания задачи.
+                // Сравниваем только по дате (без времени) или полностью? Лучше сравнивать полностью,
+                // но для наглядности сравниваем даты, чтобы нельзя было создать задачу вчера с дедлайном позавчера.
+                if (deadline.Value.Date < taskInstance.CreatedAt.Date)
+                {
+                    return new ValidationResult("Дедлайн не может быть раньше даты создания задачи.");
+                }
             }
+
             return ValidationResult.Success;
         }
     }

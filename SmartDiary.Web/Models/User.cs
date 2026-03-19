@@ -17,7 +17,9 @@ namespace SmartDiary.Web.Models
         [DataType(DataType.DateTime)]
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string? Settings { get; set; } // JSON с настройками
-                                              // Навигационные свойства
+
+        public DateTime UpdatedAt { get; set; }
+
         public ICollection<Project> Projects { get; set; } = new List<Project>();
         public ICollection<Task> Tasks { get; set; } = new List<Task>();
         public ICollection<Tag> Tags { get; set; } = new List<Tag>();

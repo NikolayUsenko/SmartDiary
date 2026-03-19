@@ -13,6 +13,9 @@ namespace SmartDiary.Web.Models
         // Навигационные свойства
         public User? Owner { get; set; }
         // Связь многие-ко-многим с Task
+
+        public DateTime UpdatedAt { get; set; }
+
         public ICollection<TaskTag> TaskTags { get; set; } = new List<TaskTag>();
     }
 }
