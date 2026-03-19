@@ -11,7 +11,7 @@ using SmartDiary.Web.Data;
 namespace SmartDiary.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260319140223_InitialCreate")]
+    [Migration("20260319143754_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
